@@ -66,7 +66,7 @@ One note before you delve into your tasks: for each endpoint you are expected to
 8. Create a POST endpoint to get questions to play the quiz. This endpoint should take category and previous question parameters and return a random questions within the given category, if provided, and that is not one of the previous questions. 
 9. Create error handlers for all expected errors including 400, 404, 422 and 500. 
 
-GET '/categories'
+#### GET '/categories'
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
 - Request Arguments: None
 - Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs. 
@@ -80,7 +80,54 @@ Response:
 '6' : "Sports"}
 
 ```
+#### GET '/questions'
+- Fetches a a list of questions including pagination.
+- Request Arguments: None
+- Example: http://127.0.0.1:5000/categories
+- Returns: return a list of questions (with answers, category, difficulty and id), number of total questions, current category, categories.  
+Response:
+```
+{
+    "categories": [
+        {
+            "id": 1,
+            "type": "Science"
+        },
+        {
+            "id": 2,
+            "type": "Art"
+        },
+        {
+            "id": 3,
+            "type": "Geography"
+        },
+        {
+            "id": 4,
+            "type": "History"
+        },
+        {
+            "id": 5,
+            "type": "Entertainment"
+        },
+        {
+            "id": 6,
+            "type": "Sports"
+        }
+    ],
+    "current_category": null,
+    "questions": [
+        {
+            "answer": "Apollo 13",
+            "category": 5,
+            "difficulty": 4,
+            "id": 2,
+            "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
+        }],
+    "success": true,
+    "total_questions": 21
+}
 
+```
 
 ## Testing
 To run the tests, run
