@@ -66,6 +66,7 @@ One note before you delve into your tasks: for each endpoint you are expected to
 8. Create a POST endpoint to get questions to play the quiz. This endpoint should take category and previous question parameters and return a random questions within the given category, if provided, and that is not one of the previous questions. 
 9. Create error handlers for all expected errors including 400, 404, 422 and 500. 
 
+## API
 #### GET '/categories'
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
 - Request Arguments: None
@@ -237,6 +238,53 @@ Response:
     "success": true
 }
 ```
+### ERROR Handlers
+```
+```
+#### 400 Bad Request
+```
+{
+'success': False,
+ 'Error': 400,
+ 'Message':'Bad request'
+}
+```
+
+#### 404 Not Found
+```
+{
+    "Error": 404,
+    "Message": "not found",
+    "success": false
+}
+```
+#### 405 Method Not Allowed
+```
+{
+    "Error": 405,
+    "Message": "method not allowed",
+    "success": false
+}
+```
+#### 422 Unprocessable
+```
+{
+    "Error": 422,
+    "Message": "unprocessable",
+    "success": false
+}
+
+```
+#### 500 Internal Server Error
+```
+{
+'success': False,
+ 'Error': 500,
+ 'Message':'Internal Server Error'
+}
+```
+
+
 
 ## Testing
 To run the tests, run
