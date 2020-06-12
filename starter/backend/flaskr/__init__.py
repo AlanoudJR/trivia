@@ -51,16 +51,15 @@ def create_app(test_config=None):
   @app.route('/categories')
   def get_categories():
     #Query the db and get all categories
-    #categories=Category.query.all()
-    categories_1=Category.query.order_by(Category.id).all()
-    current_categories=[category.format() for category in categories]
-    category_types=[category['type']for category in current_categories]
-   # categories = list(map(Category.format, Category.query.all())) #List the categories
-    #list_categories=[category.format() for category in categories]
+    categories=Category.query.order_by(Category.id).all()
+    
+    #Loop and save categories with id and type
+    list_categories= {category.id: category.type for category in categories}
+    
     return jsonify({
         'success': True,
-        'categories':current_categories,
-        'total_categories':leng(current_categories)
+        'categories':list_categories
+       # 'total_categories':len(categories)
     })
   
 
@@ -132,7 +131,7 @@ def create_app(test_config=None):
       return jsonify({
         'success': True,
         'deleted': question_id,
-        'questions': remaining_questions,
+        #'questions': remaining_questions, (not neededs)
         'total_questions': len(Question.query.all())
       })
 
@@ -169,11 +168,12 @@ def create_app(test_config=None):
       current_questions = paginate_questions(request, selection)
 
       return jsonify({
-        'success': True,
-        'created': question.id,
-        'Questions': current_questions,
-        'total_questions': len(Question.query.all())
-      })
+          'success': True,
+          'created': question.id,
+          'created_question': question.format(),
+          #'questions': current_questions,
+          'total_questions': len(Question.query.all())
+                })
 
     except:
      abort(422)
@@ -274,7 +274,7 @@ def create_app(test_config=None):
       prev_questions = data['previous_questions']
 
       #get the category ID  from the Request Body
-      category_id = data["quiz_category"]["id"]
+      category_id = data['quiz_category']['id']
       
       if category_id == 0:
       #If a category was not specified in the response body (not one of the 6 categories)
@@ -310,9 +310,7 @@ def create_app(test_config=None):
     except:
       abort(422)
 
-
-# curl http://127.0.0.1:5000/quizzes -X POST -H "Content-Type: application/json" -d '{"previous_questions": "21", "quiz_category": "1"}
-
+# curl -d '{"previous_questions": [10, 13], "quiz_category": {"type": "Science", "id": "1"}}' -H "Content-Type: application/json" -X POST http://127.0.0.1:5000/quizzes
   '''
   @TODO: 
   Create error handlers for all expected errors 
@@ -320,13 +318,15 @@ def create_app(test_config=None):
   '''
   # Handle errors [422][404] [500] [405] 
   # will be displayed after abort(Error Code) 
-  @app.errorhandler(422)
-  def unprocessable(error):
+ 
+  @app.errorhandler(400)
+  def bad_request(error):
       return jsonify({
           'success': False,
-          'Error': 422,
-          'Message':'unprocessable'
-      }),422
+          'Error': 400,
+          'Message':'Bad request'
+      }),400
+  
 
   @app.errorhandler(404)
   def not_found(error):
@@ -336,13 +336,23 @@ def create_app(test_config=None):
           'Message':'not found'
       }),404
 
-  @app.errorhandler(405)
+
+@app.errorhandler(405)
   def method_not_allowed(error):
       return jsonify({
           'success': False,
           'Error': 405,
           'Message':'method not allowed'
       }),405
+
+  @app.errorhandler(422)
+  def unprocessable(error):
+      return jsonify({
+          'success': False,
+          'Error': 422,
+          'Message':'unprocessable'
+      }),422
+
 
   @app.errorhandler(500)
   def server_error(error):
