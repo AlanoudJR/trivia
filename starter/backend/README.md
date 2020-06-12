@@ -131,6 +131,7 @@ Response:
 #### POST '/questions'
 - Posts a question, answer, category, and difficulty score.
 - Example: curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{"question": "Question1?", "answer": "answer1", "difficulty": 1, "category": "2" }'
+
 Request: 
 ```
 {
