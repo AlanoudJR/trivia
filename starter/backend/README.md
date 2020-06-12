@@ -71,6 +71,7 @@ One note before you delve into your tasks: for each endpoint you are expected to
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
 - Request Arguments: None
 - Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs. 
+
 Response:
 ```
 {
@@ -91,6 +92,7 @@ Response:
 - Request Arguments: None
 - Example: http://127.0.0.1:5000/questions
 - Returns: return a list of questions (with answers, category, difficulty and id), number of total questions, current category, categories.  
+
 Response:
 ```
 {
@@ -163,6 +165,7 @@ Response:
 - Request Arguments: category id (using url parameters).
 - Example: http://127.0.0.1:5000/categories/4/questions
 - Returns: all questions that belong to that category id (with pagination).
+
 Response:
 
 ```
@@ -187,6 +190,7 @@ Response:
 - Request Arguments: searchTerm.
 - Example: curl -d '{"searchTerm":"action"}' -H "Content-Type: application/json" -X POST http://127.0.0.1:5000/search
 - Returns: all questions that has that search term.
+
 Request:
 ```
 {
@@ -215,8 +219,8 @@ Response:
 - Take category and previous question parameters and return a random questions within the given category, if provided, and that is not one of the previous questions. 
 - Request Arguments: previous questions and category.
 - Example: curl -d '{"previous_questions": [10, 13], "quiz_category": {"type": "Science", "id": "1"}}' -H "Content-Type: application/json" -X POST http://127.0.0.1:5000/quizzes
-
 - Returns: ranom questions that has that search term.
+
 Request:
 ```
 {
@@ -241,8 +245,7 @@ Response:
 }
 ```
 ### ERROR Handlers
-```
-```
+
 #### 400 Bad Request
 ```
 {
