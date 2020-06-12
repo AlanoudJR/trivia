@@ -120,6 +120,7 @@ Response:
 - Request Arguments: None
 - Example: http://127.0.0.1:5000/questions/24
 - Returns: the id of the deleted question, and the total of the remaining questions.
+
 Response:
 ```
 {
