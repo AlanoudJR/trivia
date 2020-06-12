@@ -72,61 +72,170 @@ One note before you delve into your tasks: for each endpoint you are expected to
 - Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs. 
 Response:
 ```
-{'1' : "Science",
-'2' : "Art",
-'3' : "Geography",
-'4' : "History",
-'5' : "Entertainment",
-'6' : "Sports"}
+{
+    "categories": {
+        "1": "Science",
+        "2": "Art",
+        "3": "Geography",
+        "4": "History",
+        "5": "Entertainment",
+        "6": "Sports"
+    },
+    "success": true
+}
 
 ```
 #### GET '/questions'
 - Fetches a a list of questions including pagination.
 - Request Arguments: None
-- Example: http://127.0.0.1:5000/categories
+- Example: http://127.0.0.1:5000/questions
 - Returns: return a list of questions (with answers, category, difficulty and id), number of total questions, current category, categories.  
 Response:
 ```
 {
-    "categories": [
-        {
-            "id": 1,
-            "type": "Science"
-        },
-        {
-            "id": 2,
-            "type": "Art"
-        },
-        {
-            "id": 3,
-            "type": "Geography"
-        },
-        {
-            "id": 4,
-            "type": "History"
-        },
-        {
-            "id": 5,
-            "type": "Entertainment"
-        },
-        {
-            "id": 6,
-            "type": "Sports"
-        }
-    ],
+    "categories": {
+        "1": "Science",
+        "2": "Art",
+        "3": "Geography",
+        "4": "History",
+        "5": "Entertainment",
+        "6": "Sports"
+    },
     "current_category": null,
     "questions": [
         {
-            "answer": "Apollo 13",
-            "category": 5,
-            "difficulty": 4,
-            "id": 2,
-            "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
+            "answer": "Agra",
+            "category": 3,
+            "difficulty": 2,
+            "id": 15,
+            "question": "The Taj Mahal is located in which Indian city?"
         }],
     "success": true,
     "total_questions": 21
 }
+```
+#### DELETE '/questions/<int:question_id>'
+- Deletes a question based on its ID.
+- Request Arguments: None
+- Example: http://127.0.0.1:5000/questions/24
+- Returns: the id of the deleted question, and the total of the remaining questions.
+Response:
+```
+{
+    "deleted": 26,
+    "success": true,
+    "total_questions": 17
+}
+```
+#### POST '/questions'
+- Posts a question, answer, category, and difficulty score.
+- Example: curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{"question": "Question1?", "answer": "answer1", "difficulty": 1, "category": "2" }'
+Request: 
+```
+{
+  "question": "Question1",
+  "answer": "Answer1",
+  "category": 1,
+   "difficulty": 1
+}
+```
+Response:
+```
+{
+    "created": 34,
+    "created_question": {
+        "answer": "Answer1",
+        "category": 1,
+        "difficulty": 1,
+        "id": 34,
+        "question": "Question1"
+    },
+    "success": true,
+    "total_questions": 25
+}
 
+```
+#### GET '/categories/<int:category_id>/questions'
+- Gets questions based on category type.
+- Request Arguments: category id (using url parameters).
+- Example: http://127.0.0.1:5000/categories/4/questions
+- Returns: all questions that belong to that category id (with pagination).
+Response:
+
+```
+{
+    "current_category": "History",
+    "questions": [
+        {
+            "answer": "Maya Angelou",
+            "category": 4,
+            "difficulty": 2,
+            "id": 5,
+            "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+        }
+    ],
+    "success": true,
+    "total_questions": 1
+}
+
+```
+#### POST '/search'
+- Post a search term, and get all questions that has the searched term.
+- Request Arguments: searchTerm.
+- Example: curl -d '{"searchTerm":"action"}' -H "Content-Type: application/json" -X POST http://127.0.0.1:5000/search
+- Returns: all questions that has that search term.
+Request:
+```
+{
+"searchTerm": "action"
+}
+```
+
+Response:
+```
+{
+    "questions": [
+        {
+            "answer": "Jackson Pollock",
+            "category": 2,
+            "difficulty": 2,
+            "id": 19,
+            "question": "Which American artist was a pioneer of Abstract Expressionism, and a leading exponent of action painting?"
+        }
+    ],
+    "success": true,
+    "total_questions": 26
+}
+```
+#### POST '/quizzes'
+
+- Take category and previous question parameters and return a random questions within the given category, if provided, and that is not one of the previous questions. 
+- Request Arguments: previous questions and category.
+- Example: curl -d '{"previous_questions": [10, 13], "quiz_category": {"type": "Science", "id": "1"}}' -H "Content-Type: application/json" -X POST http://127.0.0.1:5000/quizzes
+
+- Returns: ranom questions that has that search term.
+Request:
+```
+{
+	"previous_questions": [10, 13],
+    "quiz_category":
+    	{
+			"type": "Science", "id": "1"
+    	}
+}
+```
+Response:
+```
+{
+    "question": {
+        "answer": "Answer1",
+        "category": 1,
+        "difficulty": 1,
+        "id": 34,
+        "question": "Question1"
+    },
+    "success": true
+}
 ```
 
 ## Testing
